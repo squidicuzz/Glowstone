@@ -29,6 +29,14 @@ public final class DiggingHandler implements MessageHandler<GlowSession, Digging
         BlockFace face = BlockPlacementHandler.convertFace(message.getFace());
         ItemStack holding = player.getItemInHand();
 
+        if (holding != null && player.getGameMode() == GameMode.CREATIVE) {
+            // player is in creative and holding an item
+            final String holdingItem = holding.getType().toString();
+            if (holdingItem.contains("_") && holdingItem.split("_")[1].equalsIgnoreCase("SWORD")) {
+                // ignore block break if item held is a sword
+                return;
+            }
+        }
 
         boolean blockBroken = false;
         boolean revert = false;
